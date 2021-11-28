@@ -1,11 +1,6 @@
 import * as PIXI from 'pixi.js';
 import normalizeWheel from 'normalize-wheel';
 
-// TODO:
-// - responsive testen
-//   -> drag teilen
-// - als eigenes element zwischen anderen testen
-
 const loadImages = (paths, whenLoaded) => {
   const imgs = new Map();
 
@@ -53,23 +48,27 @@ const debounce = (func, timeout = 300) => {
 };
 
 class Slider {
-  constructor() {
-    this.app = new PIXI.Application({
-      resizeTo: window,
-    });
+  constructor(slider) {
+    this.slider = slider;
 
-    document.body.appendChild(this.app.view);
-
-    this.container = new PIXI.Container();
-    this.app.stage.addChild(this.container);
+    this.slides = JSON.parse(slider.querySelector('.webgl-slides').innerHTML).slides;
 
     this.drag = 0;
     this.scroll = 0;
     this.slideTarget = -1;
 
-    this.slides = JSON.parse(document.querySelector('#webgl-slides').innerHTML).slides;
-
     this.checkSizes();
+
+    this.app = new PIXI.Application({
+      backgroundColor: 0xffffff,
+      width: window.innerWidth,
+      height: this.slideHeight,
+    });
+
+    this.container = new PIXI.Container();
+
+    this.app.stage.addChild(this.container);
+    slider.appendChild(this.app.view);
 
     this.rafs = {
       scale: new Map(),
@@ -89,6 +88,9 @@ class Slider {
 
     this.initHorizontalScroll();
     this.initDrag();
+
+    this.app.view.addEventListener('mouseenter', () => { document.body.style.cursor = 'grab'; });
+    this.app.view.addEventListener('mouseleave', () => { document.body.style.removeProperty('cursor'); });
 
     window.addEventListener('resize', debounce(this.onResize));
   }
@@ -123,6 +125,10 @@ class Slider {
 
     this.slideHeight = this.slideWidth * (3 / 2);
     this.sliderWidth = this.slides.length * (this.slideWidth + this.margin);
+
+    if (this.app) {
+      this.app.view.height = this.slideHeight;
+    }
   }
 
   scale(el, index, from, to) {
@@ -187,7 +193,7 @@ class Slider {
   }
 
   initHorizontalScroll() {
-    window.addEventListener('wheel', (e) => {
+    this.slider.addEventListener('wheel', (e) => {
       this.slideTarget = -normalizeWheel(e).pixelY;
     });
   }
@@ -217,12 +223,12 @@ class Slider {
     window.addEventListener('mouseup', () => {
       window.removeEventListener('mousemove', this.handleDrag);
       this.slideTarget /= Math.abs(this.slideTarget);
-      document.body.style.cursor = 'grab';
+      document.body.style.removeProperty('cursor');
     });
     window.addEventListener('touchend', () => {
       window.removeEventListener('touchmove', this.handleDrag);
       this.slideTarget /= Math.abs(this.slideTarget);
-      document.body.style.cursor = 'grab';
+      document.body.style.removeProperty('cursor');
     });
   }
 
@@ -268,7 +274,7 @@ class Slider {
       spriteContainer.scale.set(coverInfo.scale);
 
       container.x = (this.margin + this.slideWidth) * i;
-      container.y = 50;
+      container.y = 0;
 
       container.interactive = true;
       container.on('mouseover', this.handleMouseEnter);
@@ -301,4 +307,4 @@ class Slider {
   }
 }
 
-export default new Slider();
+export default Slider;

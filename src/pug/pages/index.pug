@@ -1,42 +1,39 @@
 extends ../template/page
 
-//- include ../components/dummy
+include ../components/slider
 
 block variables
   - const pageTitle = 'index';
 
 block main
   main
-    script#webgl-slides(type='application/json').
+    h1 webgl slider with pixi experiment
+    +slider([
       {
-        "slides": [
-          {
-            "imageUrl": "/banana-1.jpg",
-            "url": "#1"
-          },
-          {
-            "imageUrl": "/pineapple-1.jpg",
-            "url": "#2"
-          },
-          {
-            "imageUrl": "/banana-1.jpg",
-            "url": "#3"
-          },
-          {
-            "imageUrl": "/pineapple-1.jpg",
-            "url": "#4"
-          },
-          {
-            "imageUrl": "/banana-1.jpg",
-            "url": "#5"
-          },
-          {
-            "imageUrl": "/pineapple-1.jpg",
-            "url": "#6"
-          }
-        ]
+        "imageUrl": "/banana-1.jpg",
+        "url": "#1"
+      },
+      {
+        "imageUrl": "/pineapple-1.jpg",
+        "url": "#2"
+      },
+      {
+        "imageUrl": "/banana-1.jpg",
+        "url": "#3"
+      },
+      {
+        "imageUrl": "/pineapple-1.jpg",
+        "url": "#4"
+      },
+      {
+        "imageUrl": "/banana-1.jpg",
+        "url": "#5"
+      },
+      {
+        "imageUrl": "/pineapple-1.jpg",
+        "url": "#6"
       }
-
+    ])
     //- only needed for this static demo
     img(src="../../res/img/banana-1.jpg", style="display: none;")
     img(src="../../res/img/pineapple-1.jpg", style="display: none;")

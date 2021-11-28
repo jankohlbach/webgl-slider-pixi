@@ -3,6 +3,7 @@ import normalizeWheel from 'normalize-wheel';
 
 // TODO:
 // - responsive testen
+//   -> drag teilen
 // - als eigenes element zwischen anderen testen
 
 const loadImages = (paths, whenLoaded) => {
@@ -195,9 +196,12 @@ class Slider {
     document.body.style.cursor = 'grabbing';
 
     const clientX = e.clientX || e.touches[0].clientX;
+    const target = this.drag - clientX;
 
-    this.slideTarget = (this.drag - clientX) * -5;
-    this.drag = clientX;
+    if (target !== 0) {
+      this.slideTarget = (this.drag - clientX) * -3;
+      this.drag = clientX;
+    }
   }
 
   initDrag() {

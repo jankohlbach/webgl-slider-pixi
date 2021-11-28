@@ -234,7 +234,7 @@ class Slider {
 
     this.thumbs = [];
 
-    this.loadedImages.forEach((img, i) => {
+    this.loadedImages?.forEach((img, i) => {
       const texture = PIXI.Texture.from(img.img);
       const sprite = new PIXI.Sprite(texture);
       const container = new PIXI.Container();

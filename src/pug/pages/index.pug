@@ -1,0 +1,38 @@
+extends ../template/page
+
+//- include ../components/dummy
+
+block variables
+  - const pageTitle = 'index';
+
+block main
+  main
+    script#webgl-slides(type='application/json').
+      {
+        "slides": [
+          {
+            "imageUrl": "/banana-1.jpg",
+            "url": "#1"
+          },
+          {
+            "imageUrl": "/pineapple-1.jpg",
+            "url": "#2"
+          },
+          {
+            "imageUrl": "/banana-1.jpg",
+            "url": "#3"
+          },
+          {
+            "imageUrl": "/pineapple-1.jpg",
+            "url": "#4"
+          },
+          {
+            "imageUrl": "/banana-1.jpg",
+            "url": "#5"
+          },
+          {
+            "imageUrl": "/pineapple-1.jpg",
+            "url": "#6"
+          }
+        ]
+      }

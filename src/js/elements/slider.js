@@ -57,6 +57,8 @@ class Slider {
     this.scroll = 0;
     this.slideTarget = -1;
 
+    this.wasDragged = false;
+
     this.checkSizes();
 
     this.app = new PIXI.Application({
@@ -199,33 +201,45 @@ class Slider {
   }
 
   handleDrag(e) {
+    this.dragTimeout = setTimeout(() => {
+      this.wasDragged = true;
+    }, 200);
+
     document.body.style.cursor = 'grabbing';
 
     const clientX = e.clientX || e.touches[0].clientX;
     const target = this.drag - clientX;
 
     if (target !== 0) {
-      this.slideTarget = (this.drag - clientX) * -3;
+      this.slideTarget = (this.drag - clientX) * -1;
       this.drag = clientX;
     }
   }
 
   initDrag() {
     window.addEventListener('mousedown', (e) => {
+      this.wasDragged = false;
       this.drag = e.clientX || e.touches[0].clientX;
       window.addEventListener('mousemove', this.handleDrag);
     });
     window.addEventListener('touchstart', (e) => {
+      this.wasDragged = false;
       this.drag = e.clientX || e.touches[0].clientX;
       window.addEventListener('touchmove', this.handleDrag);
     });
 
     window.addEventListener('mouseup', () => {
+      if (this.dragTimeout) {
+        clearTimeout(this.dragTimeout);
+      }
       window.removeEventListener('mousemove', this.handleDrag);
       this.slideTarget /= Math.abs(this.slideTarget);
       document.body.style.removeProperty('cursor');
     });
     window.addEventListener('touchend', () => {
+      if (this.dragTimeout) {
+        clearTimeout(this.dragTimeout);
+      }
       window.removeEventListener('touchmove', this.handleDrag);
       this.slideTarget /= Math.abs(this.slideTarget);
       document.body.style.removeProperty('cursor');
@@ -233,7 +247,9 @@ class Slider {
   }
 
   handleClick(e, i) {
-    window.location = this.slides[i].url;
+    if (!this.wasDragged) {
+      window.location = this.slides[i].url;
+    }
   }
 
   add() {
@@ -280,6 +296,7 @@ class Slider {
       container.on('mouseover', this.handleMouseEnter);
       container.on('mouseout', this.handleMouseLeave);
       container.on('click', (e) => this.handleClick(e, i));
+      container.on('touchend', (e) => this.handleClick(e, i));
 
       spriteContainer.addChild(sprite);
       container.addChild(spriteContainer);

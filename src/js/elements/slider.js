@@ -80,6 +80,15 @@ class Slider {
     this.init();
   }
 
+  bindings() {
+    this.onResize = this.onResize.bind(this);
+    this.initDrag = this.initDrag.bind(this);
+    this.handleDrag = this.handleDrag.bind(this);
+    this.handleMouseEnter = this.handleMouseEnter.bind(this);
+    this.handleMouseLeave = this.handleMouseLeave.bind(this);
+    this.handleClick = this.handleClick.bind(this);
+  }
+
   init() {
     loadImages(this.slides.map((slide) => slide.imageUrl), (images) => {
       this.loadedImages = images;
@@ -95,15 +104,6 @@ class Slider {
     this.app.view.addEventListener('mouseleave', () => { document.body.style.removeProperty('cursor'); });
 
     window.addEventListener('resize', debounce(this.onResize));
-  }
-
-  bindings() {
-    this.onResize = this.onResize.bind(this);
-    this.initDrag = this.initDrag.bind(this);
-    this.handleDrag = this.handleDrag.bind(this);
-    this.handleMouseEnter = this.handleMouseEnter.bind(this);
-    this.handleMouseLeave = this.handleMouseLeave.bind(this);
-    this.handleClick = this.handleClick.bind(this);
   }
 
   onResize() {

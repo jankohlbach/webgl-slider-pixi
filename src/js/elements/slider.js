@@ -203,7 +203,7 @@ class Slider {
   handleDrag(e) {
     this.dragTimeout = setTimeout(() => {
       this.wasDragged = true;
-    }, 200);
+    }, 100);
 
     document.body.style.cursor = 'grabbing';
 

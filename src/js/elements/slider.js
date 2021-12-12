@@ -211,7 +211,7 @@ class Slider {
     const target = this.drag - clientX;
 
     if (target !== 0) {
-      this.slideTarget = (this.drag - clientX) * -1;
+      this.slideTarget = (this.drag - clientX) * -1.5;
       this.drag = clientX;
     }
   }

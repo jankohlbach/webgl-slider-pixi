@@ -217,30 +217,30 @@ class Slider {
   }
 
   initDrag() {
-    window.addEventListener('mousedown', (e) => {
+    this.slider.addEventListener('mousedown', (e) => {
       this.wasDragged = false;
       this.drag = e.clientX || e.touches[0].clientX;
-      window.addEventListener('mousemove', this.handleDrag);
+      this.slider.addEventListener('mousemove', this.handleDrag);
     });
-    window.addEventListener('touchstart', (e) => {
+    this.slider.addEventListener('touchstart', (e) => {
       this.wasDragged = false;
       this.drag = e.clientX || e.touches[0].clientX;
-      window.addEventListener('touchmove', this.handleDrag);
+      this.slider.addEventListener('touchmove', this.handleDrag);
     });
 
-    window.addEventListener('mouseup', () => {
+    this.slider.addEventListener('mouseup', () => {
       if (this.dragTimeout) {
         clearTimeout(this.dragTimeout);
       }
-      window.removeEventListener('mousemove', this.handleDrag);
+      this.slider.removeEventListener('mousemove', this.handleDrag);
       this.slideTarget /= Math.abs(this.slideTarget);
       document.body.style.removeProperty('cursor');
     });
-    window.addEventListener('touchend', () => {
+    this.slider.addEventListener('touchend', () => {
       if (this.dragTimeout) {
         clearTimeout(this.dragTimeout);
       }
-      window.removeEventListener('touchmove', this.handleDrag);
+      this.slider.removeEventListener('touchmove', this.handleDrag);
       this.slideTarget /= Math.abs(this.slideTarget);
       document.body.style.removeProperty('cursor');
     });
